@@ -22,21 +22,41 @@
 // Use your function to create a card for each of the articles, and append each card to the DOM.
 
 axios
-    .get (`https://lambda-times-api.herokuapp.com/articles`)
+    .get(`https://lambda-times-api.herokuapp.com/articles`)
     .then(res=>{
         const articleData=res.data.articles
-        
-        
-        Array.from(articleData).forEach(array=>{
-            Array.from(array).forEach(obj=>{
-             console.log(array.obj)
+        let propertyNames=Object.keys(articleData)
+        newArray=[]
+        propertyNames.forEach(propname=>{
+            articleData[propname].forEach(item=>{
+            newArray.push(item)    
             })
-         })
- 
-     })
+            
+        })
+         // // for (foobarBanana in articleData) {
+        //     articleData[foobarBanana].forEach(item=>{
+        //         newArray.push(item) 
+        //     })
+        // } alternate method, found code.
+    
+
+        newArray.forEach(info=>{
+            let newCard=cardMaker(info)
+            let endPoint=document.querySelector(".cards-container")
+            endPoint.appendChild(newCard)
+        })
+       
+        
+            
+})
+            
+        
+        
+
+        
 
     function cardMaker({authorName,authorPhoto,headline,id}){
-        debugger
+        
 
         let cardDiv=document.createElement('div')
         let headlineDiv=document.createElement('div')
@@ -58,7 +78,11 @@ axios
 
         headlineDiv.textContent=headline
         imgFile.src=authorPhoto
-        span.textContent=`By ${authorName}`
+        authorSpan.textContent=`By ${authorName}`
+
+        cardDiv.addEventListener("click",(event)=>{
+            console.log(headlineDiv.textContent)
+        })
 
         return cardDiv
         
